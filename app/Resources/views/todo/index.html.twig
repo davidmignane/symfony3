@@ -1,0 +1,33 @@
+{% extends 'base2.html.twig' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <h2 class="page-header">latest todos</h2>
+<table class="table">
+    <th><center>#</center></th>
+    <th><center>todo</center></th>
+    <th><center>due date</center></th>
+    <th></th>
+    {% for todo in todos %}
+    <tr>
+        <td>{{todo.id}}</td>
+        <td>{{todo.name}}</td>
+        <td>{{todo.duedate|date('F j,Y, g:i a')}}</td>
+        <td><center>
+                <a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/details/{{todo.id}}" class="btn btn-success">view</a>
+                <a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/edit/{{todo.id}}" class="btn btn-default">edit</a>
+                <a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/delete/{{todo.id}}" class="btn btn-danger">delete</a>
+            <center>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+<div class="col-md-3">
+</div>
+</div>
+</div>
+{% endblock %}

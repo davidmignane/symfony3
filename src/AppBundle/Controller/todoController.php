@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class todoController extends Controller
 {
     /**
-     * @Route("/todos", name="todo_list")
+     * @Route("/", name="todo_list")
      */
     public function listAction()
     {

@@ -1,0 +1,23 @@
+{% extends 'base2.html.twig' %}
+{% block body %}
+    
+    <div class="row">
+        <div class="col-md-3">
+            <h1>Todo creation</h1>
+              <a href="{{ path('todo_index') }}">
+                <button type="button"  class="btn btn-info">
+                    <span class="glyphicon glyphicon-chevron-left"></span>      
+                </button>
+              </a>
+              
+        </div>
+        <div class="col-md-4" style="background:gray;">
+            {{form_start(form)}}
+            {{form_widget(form)}}
+             <input type="submit" value="Create" class="btn btn-success" />
+            {{form_end(form)}}
+        </div>
+        <div class="col-md-5">
+        </div>
+    </div>
+{% endblock %}

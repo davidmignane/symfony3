@@ -1,33 +1,67 @@
 {% extends 'base2.html.twig' %}
 {% block body %}
-<div class="container">
+    
+<div class="container" >
     <div class="row">
+        <div class="col-md-3">  
+        
+        </div>
+        <div class="col-md-6" style="background:gray;">
+                <h2>liste  des   todos 
+                    <div class="dropdown" style="float:right;">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                          search
+                        </button>
+
+                        <div class="dropdown-menu">
+                            <form>
+                                <input class="form-control" type="text" placeholder="Search">
+                                <button class="btn btn-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </h2> 
+            <table class="table">
+                <th><center>######</center></th>
+                <th><center>NAME</center></th>
+                <th><center>DUE DATE</center></th>
+                <th><center>Action</center></th>
+                {% for todo in todos %} 
+                 <tr>
+                    <td>{{todo.id}}</td>
+                    <td>{{todo.name}}</td>
+                    <td>{{todo.duedate|date('F j,Y')}}</td>
+                    <td>
+                        <center>
+                            <a href="{{path('todo_show',{'id':todo.id})}}" class="btn btn-success">
+                                view
+                            </a>
+                            <a href="{{path('todo_edit',{'id':todo.id})}}" class="btn btn-default">
+                                edit
+                            </a>
+                            <a href="{{path('todo_delete',{'id':todo.id})}}" class="btn btn-danger">
+                                delete
+                            </a>
+                        <center>
+                    </td>
+                 </tr>
+                {% endfor %}
+            </table>
+            <a href="{{path('todo_new')}}" style="float:right;">
+                <button type="button"  class="btn btn-info">
+                    <span class="glyphicon glyphicon-plus"></span>  
+                </button>
+            </a>
+            <canvas id="myChart" style="background:white;"></canvas> 
+        </div>
         <div class="col-md-3">
         </div>
-        <div class="col-md-6">
-            <h2 class="page-header">latest todos</h2>
-<table class="table">
-    <th><center>#</center></th>
-    <th><center>todo</center></th>
-    <th><center>due date</center></th>
-    <th></th>
-    {% for todo in todos %}
-    <tr>
-        <td>{{todo.id}}</td>
-        <td>{{todo.name}}</td>
-        <td>{{todo.duedate|date('F j,Y, g:i a')}}</td>
-        <td><center>
-                <a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/details/{{todo.id}}" class="btn btn-success">view</a>
-                <a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/edit/{{todo.id}}" class="btn btn-default">edit</a>
-                <a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/delete/{{todo.id}}" class="btn btn-danger">delete</a>
-            <center>
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    </div>
 </div>
-<div class="col-md-3">
-</div>
-</div>
-</div>
+
 {% endblock %}
+ {% block javascripts %}
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+            <script type="text/javascript" src="{{asset('chart/chart.js')}}"></script>
+           
+  {% endblock %}

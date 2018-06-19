@@ -1,146 +1,125 @@
 <?php
-namespace AppBundle\Controller;
-use AppBundle\Entity\Todo;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class todoController extends Controller
+namespace AppBundle\Controller;
+
+use AppBundle\Entity\Todo;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * Todo controller.
+ *
+ * @Route("todo")
+ */
+class TodoController extends Controller
 {
     /**
-     * @Route("/", name="todo_list")
+     * Lists all todo entities.
+     *
+     * @Route("/", name="todo_index")
+     * @Method("GET")
      */
-    public function listAction()
+    public function indexAction()
     {
-       
-        $todos=$this->getDoctrine()->getRepository('AppBundle:Todo')->findAll();
-        return $this->render('todo/index.html.twig',array('todos'=>$todos));
-    }
-   /**
-     * @Route("/todo/create", name="todo_create")
-     */
-    public function createAction(Request $request)
-    {
-        $todo=new Todo;
-        $form=$this->createFormBuilder($todo)
-        ->add('name',TextType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('category',TextType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('description',TextareaType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('priority',ChoiceType::class,array('choices'=>array('low'=>'low','normal'=>'normal'),'attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('due_date',DateTimeType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('save',SubmitType::class,array('label'=>'create Todo','attr'=>array('class'=>'btn btn-primary','style'=>'margin-bottom:15px')))
-        ->getForm();
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
-            //Get data
-            $name=$form['name']->getData();
-            $category=$form['category']->getData();
-            $description=$form['description']->getData();
-            $priority=$form['priority']->getData();
-            $due_date=$form['due_date']->getData();
-            $now=new\DateTime('now');
+        $em = $this->getDoctrine()->getManager();
 
-            $todo->setName($name);
-            $todo->setCategory($category);
-            $todo->setDescription($description);
-            $todo->setDueDate($due_date);
-            $todo->setName($name);
-            $todo->setCreateDate($now);
-            $em= $this->getDoctrine()->getManager();
+        $todos = $em->getRepository('AppBundle:Todo')->findAll();
+
+        return $this->render('todo/index.html.twig', array(
+            'todos' => $todos,
+        ));
+    }
+    /**
+     * Creates a new todo entity.
+     *
+     * @Route("/new", name="todo_new")
+     * @Method({"GET", "POST"})
+     */
+    public function newAction(Request $request)
+    {
+        $todo = new Todo();
+        $form = $this->createForm('AppBundle\Form\TodoType', $todo);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($todo);
             $em->flush();
-            $this->addFlash(
-                'notice',
-                'Todo Added'
-            );
-            return $this->redirectToRoute('todo_list');
+
+            return $this->redirectToRoute('todo_show', array('id' => $todo->getId()));
         }
-        return $this->render('todo/create.html.twig',array('form'=>$form->createView()) );
+
+        return $this->render('todo/new.html.twig', array(
+            'todo' => $todo,
+            'form' => $form->createView(),
+        ));
     }
-     /**
-     * @Route("/todo/edit/{id}", name="todo_edit")
+    /**
+     * Finds and displays a todo entity.
+     *
+     * @Route("/{id}",name="todo_show")
+     * @Method("GET")
      */
-    public function editAction($id,Request $request)
+    public function showAction(Todo $todo)
     {
-       $todo=$this->getDoctrine()->getRepository('AppBundle:Todo')->find($id);
-        $now=new\DateTime('now');
-            $todo->setName($todo->getName());
-            $todo->setCategory($todo->getCategory());
-            $todo->setDescription($todo->getDescription());
-            $todo->setPriority($todo->getPriority());
-            $todo->setDueDate($todo->getDueDate());
-            $todo->setCreateDate($now);
-
-       //text
-
-        $form=$this->createFormBuilder($todo)
-        ->add('name',TextType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('category',TextType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('description',TextareaType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('priority',ChoiceType::class,array('choices'=>array('low'=>'low','normal'=>'normal'),'attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('due_date',DateTimeType::class,array('attr'=>array('class'=>'form-control','style'=>'margin-bottom:15px')))
-        ->add('save',SubmitType::class,array('label'=>'update Todo','attr'=>array('class'=>'btn btn-primary','style'=>'margin-bottom:15px')))
-        ->getForm();
+        $deleteForm = $this->createDeleteForm($todo);
+        return $this->render('todo/show.html.twig', array(
+            'todo' => $todo,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+    /**
+     * Displays a form to edit an existing todo entity.
+     *
+     * @Route("/{id}/edit",name="todo_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, Todo $todo)
+    {
+        $deleteForm = $this->createDeleteForm($todo);
+        $editForm = $this->createForm('AppBundle\Form\TodoType', $todo);
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('todo_index');
+        }
+        return $this->render('todo/edit.html.twig', array(
+            'todo' => $todo,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+    /**
+     * Deletes a todo entity.
+     *
+     * @Route("/{id}",name="todo_delete")
+     * @Method("DELETE")
+     */
+    public function deleteAction(Request $request, Todo $todo)
+    {
+        $form = $this->createDeleteForm($todo);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            //Get data
-            $name=$form['name']->getData();
-            $category=$form['category']->getData();
-            $description=$form['description']->getData();
-            $priority=$form['priority']->getData();
-            $due_date=$form['due_date']->getData();
-            $now=new\DateTime('now');
-
-             $em= $this->getDoctrine()->getManager();
-             $todo=$em->getRepository('AppBundle:Todo')->find($id);
- 
-
-            $todo->setName($name);
-            $todo->setCategory($category);
-            $todo->setDescription($description);
-            $todo->setDueDate($due_date);
-            $todo->setPriority($priority);
-            $todo->setCreateDate($now);
-           
-         
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($todo);
             $em->flush();
-            $this->addFlash(
-                'notice',
-                'Todo Update'
-            );
-        return $this->redirectToRoute('todo_list'); 
-            }
-       //fin text
-
-        return $this->render('todo/edit.html.twig',array('todo'=>$todo,'form'=>$form->createView()));
-    
-}
-    /**
-     * @Route("/todo/details/{id}", name="todo_details")
-     */
-    public function detailsAction($id)
-    {
-         $todo=$this->getDoctrine()->getRepository('AppBundle:Todo')->find($id);
-        return $this->render('todo/details.html.twig',array('todo'=>$todo));
-        
+        }
+        return $this->redirectToRoute('todo_index');
     }
-     /**
-     * @Route("/todo/delete/{id}", name="todo_delete")
+    /**
+     * Creates a form to delete a todo entity.
+     *
+     * @param Todo $todo The todo entity
+     *
+     * @return \Symfony\Component\Form\Form The form
      */
-    public function deleteAction($id)
-    {       $em= $this->getDoctrine()->getManager();
-         $todo=$em->getRepository('AppBundle:Todo')->find($id);
-         $em->remove($todo);
-         $em->flush();
-         $this->addFlash('notice','Todo Removed');
-        return $this->redirectToRoute('todo_list');
-        
+    private function createDeleteForm(Todo $todo)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('todo_delete', array('id' => $todo->getId())))
+            ->setMethod('DELETE')
+            ->getForm();
     }
 }

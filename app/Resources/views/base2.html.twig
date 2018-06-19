@@ -3,45 +3,47 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        
+        {% block stylesheets %}
              <meta http-equiv="X-UA-Compatible" content="IE=edge">
              <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+             <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }}">
+        {% endblock %}
+           <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
+           </script>
     </head>
     <body>
         {% block menu %}
-             <div class="container-fluid">
+            <div class="container-fluid">
                 <nav class="navbar navbar-inverse">
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#">WebSiteName</a>
                         </div>
                         <ul class="nav navbar-nav">
-                            <li ><a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todos">Home</a></li>
-                            <li><a href="/davidBeginning2/davidBeginning2/web/app_dev.php/todo/create">add new todo</a></li>
-                            
+                            <li><a href="{{path('todo_index')}}">Home</a></li>
+                            <li><a href="{{path('todo_new')}}">statistiques</a></li>
+                            <li><a href="{{path('todo_new')}}">statistiques</a></li>
                         </ul>
                     </div>
                 </nav>
             </div>
-        {% endblock %}
-       
-            
+        {% endblock %}     
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script type="text/javascript" src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
+           
         {% endblock %}
-            <footer class="page-footer font-small blue pt-4 mt-4">
-    <!--Copyright-->
-    <div class="footer-copyright py-3 text-center">
-        © 2018 Copyright:
-        <a href="https://mdbootstrap.com/material-design-for-bootstrap/"> MDBootstrap.com </a>
-    </div>
-    <!--/.Copyright-->
-</footer>
+        
+        {% block footer %}
+        <footer class="page-footer font-small blue pt-4 mt-4">
+            <div class="footer-copyright py-3 text-center">
+                © 2018 Copyright:
+                <a href=""> MDBootstrap.com </a>
+            </div>
+        </footer>
+ {% endblock %}
     </body>
 </html>

@@ -1,0 +1,31 @@
+{% extends 'base2.html.twig' %}
+{% block body %}
+    <div class="row">
+       <div class="col-md-3">
+            <h1>Todo show</h1>
+              <a href="{{ path('todo_index') }}">
+                <button type="button"  class="btn btn-info">
+                    <span class="glyphicon glyphicon-chevron-left"></span>      
+                </button>
+              </a>  
+        </div>
+        <div class="col-md-6" style="background:gray;">
+            <ul class="list-group">
+                <li class="list-group-item"><span style="font-size:18px;">Name:{{todo.name}}</span></li>
+                <li class="list-group-item"><span style="font-size:18px;">Category:{{todo.category}}</span></li>
+                <li class="list-group-item">Priority:{{todo.priority}}</li>
+                <li class="list-group-item">Due:
+                    <strong>{{todo.dueDate|date('F j,Y')}}
+                    </strong>
+                </li>
+            </ul>
+            <a href="{{path('todo_edit',{'id':todo.id})}}" 
+            class="btn btn-info" style="float:right;">
+             edit
+            </a>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+    </div>
+{% endblock %}

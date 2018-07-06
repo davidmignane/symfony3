@@ -1,9 +1,16 @@
+/* const routes = require('web/js/fos_js_routes.json');
+ import Routing from 'vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+
+ Routing.setRoutingData(routes);
+var url = Routing.generate('todo_index');
+console.log(url);*/
+/*
    $.get("{{ path('todo_index') }}", function(todos){
         alert("Data: " + todos);
         console.log("Data: " + todos);
-    });
+    });*/
 var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
+var chart = new Chart(ctx,{
     // The type of chart we want to create
     type: 'line',
 

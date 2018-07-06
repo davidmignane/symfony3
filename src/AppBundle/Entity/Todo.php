@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Todo
@@ -52,17 +53,62 @@ class Todo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="due_date", type="datetimetz")
+     * @ORM\Column(name="due_date", type="date")
      */
     private $dueDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetimetz")
+     * @ORM\Column(name="create_date", type="date")
      */
     private $createDate;
 
+    /**
+     * @var \String
+     *
+     * @ORM\Column(name="url", type="string")
+     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
+     */
+    private $url;
+
+  public function getUploadDir()
+   {
+    return 'images';
+   }
+
+   protected function getUploadRootDir()
+   {
+    return __DIR__.'/../../../../web/'.$this->getUploadDir();
+   }
+   
+   public function getWebPath()
+   {
+    return $this->getUploadDir().'/'.$this->getUrl();
+   }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return Todo
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
 
     /**
      * Get id
@@ -217,5 +263,6 @@ class Todo
     {
         return $this->createDate;
     }
+    
 }
 

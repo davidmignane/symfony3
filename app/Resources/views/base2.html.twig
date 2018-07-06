@@ -4,46 +4,106 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
-             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-             <meta name="viewport" content="width=device-width, initial-scale=1">
-             <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }}">
-        {% endblock %}
-           <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
-           </script>
+             <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+             <meta name="viewport" content="width=device-width, initial-scale=1"/>
+             <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }}"/>
+             <link rel="stylesheet" href="{{ asset('css/menu.css') }}"/>
+             <link rel="stylesheet" href="{{ asset('css/footer.css') }}"/>
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+             <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+        {% endblock %}     
     </head>
     <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+        <!--block menu-->
         {% block menu %}
-            <div class="container-fluid">
-                <nav class="navbar navbar-inverse">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="#">WebSiteName</a>
-                        </div>
-                        <ul class="nav navbar-nav">
-                            <li><a href="{{path('todo_index')}}">Home</a></li>
-                            <li><a href="{{path('todo_new')}}">statistiques</a></li>
-                            <li><a href="{{path('todo_new')}}">statistiques</a></li>
-                        </ul>
-                    </div>
-                </nav>
+        <div class="nav-side-menu">
+            <div class="brand"> LOGO
             </div>
-        {% endblock %}     
-        {% block body %}{% endblock %}
+              <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+                <div class="menu-list">
+                    <ul id="menu-content" class="menu-content collapse out">
+                        <li>
+                          <a href="{{path('todo_index')}}">
+                           <i class="fa fa-dashboard fa-lg">
+                           </i> 
+                             Dashboard
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{{path('todo_new')}}">
+                            <i class="fa fa-gift fa-lg">
+                            </i> 
+                              Elements
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{{path('todo_new')}}">
+                            <i class="fa fa-globe fa-lg">
+                            </i>
+                              Services 
+                          </a>
+                        </li>  
+                        <li>
+                          <a href="{{path('todo_new')}}">
+                            <i class="fa fa-car fa-lg">
+                            </i>
+                               New 
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{{path('todo_new')}}">
+                            <i class="fa fa-user fa-lg">
+                            </i>
+                               Profile
+                          </a>
+                        </li>
+
+                         <li>
+                           <a href="{{path('todo_new')}}">
+                            <i class="fa fa-users fa-lg">
+                            </i> 
+                               Users
+                           </a>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        {% endblock %}   
+    </div>
+    <div class="col-md-10">
+        <!--block body-->  
+        {% block body %}
+          <div class="page-header">
+                <h1>Example Page Header</h1>      
+          </div>
+        {% endblock %}
+    </div>
+    </div>
+        <!-- block javascript-->
         {% block javascripts %}
             <script type="text/javascript" src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
-           
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
         {% endblock %}
         
         {% block footer %}
-        <footer class="page-footer font-small blue pt-4 mt-4">
-            <div class="footer-copyright py-3 text-center">
-                © 2018 Copyright:
-                <a href=""> MDBootstrap.com </a>
-            </div>
-        </footer>
- {% endblock %}
+    <footer class="footer1">
+        <div class="footer">
+                    <ul class="social">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                    </ul>
+        </div> 
+   </footer>
+{% endblock %}
+   
+    </div>
     </body>
 </html>

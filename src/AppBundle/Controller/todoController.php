@@ -8,11 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Todo controller.
- *
- * @Route("todo")
- */
+
+
+
 class TodoController extends Controller
 {
     /**
@@ -21,13 +19,15 @@ class TodoController extends Controller
      * @Route("/", name="todo_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $todos = $em->getRepository('AppBundle:Todo')->findAll();
+        $tod = $em->getRepository('AppBundle:Todo')->findAll();
+        $todos= $this->get('knp_paginator')->paginate($tod,$request->query->get('page',1),6);
 
-        return $this->render('todo/index.html.twig', array(
+        return $this->render('todo/index.html.twig', array
+        (
             'todos' => $todos,
         ));
     }
@@ -42,15 +42,32 @@ class TodoController extends Controller
         $todo = new Todo();
         $form = $this->createForm('AppBundle\Form\TodoType', $todo);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
+
+            $file = $todo->getUrl();
+             // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+             // Move the file to the directory where brochures are stored
+            $file->move
+            (
+                $this->getParameter('image_directory'),
+                $fileName
+            );
+
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $todo->setUrl($fileName);
+
             $em->persist($todo);
             $em->flush();
 
             return $this->redirectToRoute('todo_show', array('id' => $todo->getId()));
         }
 
-        return $this->render('todo/new.html.twig', array(
+        return $this->render('todo/new.html.twig', array
+        (
             'todo' => $todo,
             'form' => $form->createView(),
         ));
@@ -64,7 +81,8 @@ class TodoController extends Controller
     public function showAction(Todo $todo)
     {
         $deleteForm = $this->createDeleteForm($todo);
-        return $this->render('todo/show.html.twig', array(
+        return $this->render('todo/show.html.twig', array
+        (
             'todo' => $todo,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -80,15 +98,41 @@ class TodoController extends Controller
         $deleteForm = $this->createDeleteForm($todo);
         $editForm = $this->createForm('AppBundle\Form\TodoType', $todo);
         $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($editForm->isSubmitted() && $editForm->isValid()) 
+        {
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('todo_index');
         }
-        return $this->render('todo/edit.html.twig', array(
+        return $this->render('todo/edit.html.twig', array
+            (
             'todo' => $todo,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+            ));
+    }
+
+    /**
+     * Displays a form to edit an existing todo entity.
+     *
+     * @Route("/{id}/editImage",name="todo_editImage")
+     * @Method({"GET", "POST"})
+     */
+    public function editImageAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $todo= $em->getRepository('AppBundle:Todo')->findBy($id);
+        
+        if ($editForm->isSubmitted() && $editForm->isValid()) 
+        {
+            $this->flush();
+            return $this->redirectToRoute('todo_index');
+        }
+        return $this->render('todo/edit.html.twig', array
+            (
+            'todo' => $todo,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+            ));
     }
     /**
      * Deletes a todo entity.

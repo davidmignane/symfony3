@@ -20,11 +20,11 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        {{form_start(form)}}
-            {{form_widget(form)}}
-             <center><input type="submit" value="Create" class="btn btn-success" />
-             </center>
-        {{form_end(form)}}
+        <h1>Todo edit </h1>
+            {{ form_start(edit_form) }}
+                {{ form_widget(todo.url) }}
+                <input type="submit" value="Edit"  class="btn btn-success" />
+            {{ form_end(edit_form) }}
       </div>
 
       <!-- Modal footer -->

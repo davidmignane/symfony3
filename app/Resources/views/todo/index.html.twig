@@ -2,24 +2,15 @@
 {% block body %}
     
 <div class="container" >
+    <div class="page-header">
+                <h1>Example Page Header</h1>      
+          </div>
     <div class="row">
         <div class="col-md-3">  
         
         </div>
         <div class="col-md-6" style="background:gray;">
                 <h2>liste  des   todos 
-                    <div class="dropdown" style="float:right;">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                          search
-                        </button>
-
-                        <div class="dropdown-menu">
-                            <form>
-                                <input class="form-control" type="text" placeholder="Search">
-                                <button class="btn btn-success" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </div>
                 </h2> 
             <table class="table">
                 <th><center>######</center></th>
@@ -47,6 +38,7 @@
                  </tr>
                 {% endfor %}
             </table>
+            <div class="text-center">{{ knp_pagination_render(todos) }}</div>
             <a href="{{path('todo_new')}}" style="float:right;">
                 <button type="button"  class="btn btn-info">
                     <span class="glyphicon glyphicon-plus"></span>  
@@ -59,9 +51,11 @@
     </div>
 </div>
 
+
 {% endblock %}
  {% block javascripts %}
      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-            <script type="text/javascript" src="{{asset('chart/chart.js')}}"></script>
-           
+     <script type="text/javascript" src="{{asset('chart/chart.js')}}"></script>     
+     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>   
   {% endblock %}

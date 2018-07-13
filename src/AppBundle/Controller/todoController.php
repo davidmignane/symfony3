@@ -24,7 +24,7 @@ class TodoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $tod = $em->getRepository('AppBundle:Todo')->findAll();
-        $todos= $this->get('knp_paginator')->paginate($tod,$request->query->get('page',1),6);
+        $todos= $this->get('knp_paginator')->paginate($tod,$request->query->get('page',1),3);
 
         return $this->render('todo/index.html.twig', array
         (

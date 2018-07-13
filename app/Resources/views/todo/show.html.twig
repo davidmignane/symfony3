@@ -1,26 +1,24 @@
 {% extends 'base2.html.twig' %}
 {% block body %}
-    <div class="container">
+    
     <div class="row">
-         <div class="col-md-1">
-
-        </div>
-       <div class="col-md-3">
+         
+       <div class="col-md-2">
               <a href="{{ path('todo_index') }}">
                 <button type="button"  class="btn btn-info">
                     <span class="glyphicon glyphicon-chevron-left"></span>      
                 </button>
               </a>  
         </div>
-        <div class="col-md-6" style="background:gray;">
+        <div class="col-md-8" style="background:gray;">
             <h1>Todo show</h1>
             <ul class="list-group">
                 <li class="list-group-item"><span style="font-size:18px;">Name:{{todo.name}}</span></li>
                 <li class="list-group-item"><span style="font-size:18px;">Category:{{todo.category}}</span></li>
-                <li class="list-group-item">Priority:{{todo.priority}}</li>
-                <li class="list-group-item">Due:
+                <li class="list-group-item"><span style="font-size:18px;">Priority:{{todo.priority}}</span></li>
+                <li class="list-group-item"><span style="font-size:18px;">Due:
                     <strong>{{todo.dueDate|date('F j,Y')}}
-                    </strong>
+                    </strong></span>
                 </li>
                 <li class="list-group-item">image:<!--<img src="{{ asset('images/'~todo.url) }}"-->
                     <img src="{{ asset(todo.webPath) }}">
@@ -41,5 +39,5 @@
 
         </div>
     </div>
-</div>
+
 {% endblock %}

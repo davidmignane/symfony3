@@ -4,47 +4,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <!---->
-    <!-- The Modal -->
-<div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header"><center>
-        <h4 class="modal-title">Todo creation</h4>
-    </center>
-        <a href="{{ path('todo_index') }}">
-        <button type="button" class="close" >&times;</button>
-        </a>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        {{form_start(form)}}
-            {{form_widget(form)}}
-             <center><input type="submit" value="Create" class="btn btn-success" />
-             </center>
-        {{form_end(form)}}
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <a href="{{ path('todo_index') }}">
-        <button type="button" class="btn btn-danger" >Close</button>
-        </a>
-      </div>
+    <div class="page-header">
+        <h1>Example Page Header</h1>      
     </div>
-  </div>
-</div>
-<script>
-$(document).ready(function(){
-
-$("#myModal").modal(
-{  backdrop: 'static',
-keyboard: false}
-);
-
-});
-</script>
+    <div class="row">
+      <div class="col-md-2">
+        </div>
+        <div class="col-md-8" style="background:gray;">
+            <h2>new Todo</h2> 
+             {{form_start(form)}}
+             {{form_widget(form)}}
+             <center>
+              <input type="submit" value="Create" class="btn btn-success" />
+             </center>
+            {{form_end(form)}}
+        <div class="col-md-2">
+        </div>
+    </div>
     <!---->
 {% endblock %}

@@ -14,13 +14,34 @@
         {% endblock %}     
     </head>
     <body>
+
         <div class="container">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+                <nav class="navbar navbar-inverse" style="background:gray; width:100%;border:none;">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">WebSiteName</a>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{path('todo_index')}}">Home</a></li>
+                            <li><a href="{{path('todo_new')}}">add new todo</a></li>
+                        </ul>
+                    </div>
+          </nav>
+            </div>
+          </div><br/>
             <div class="row">
+
                 <div class="col-md-2">
+
         <!--block menu-->
         {% block menu %}
+
         <div class="nav-side-menu">
-            <div class="brand"> LOGO
+            <div class="brand">  
+              <img src="{{ asset('login2/images/logo.jpg')}}" alt="IMG" width="150px" height="90px" class="rounded">
             </div>
               <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
                 <div class="menu-list">
